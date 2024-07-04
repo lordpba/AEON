@@ -1,3 +1,5 @@
+![Image](city_mars_prototype.jpeg)
+
 ### AI Autonomous Governance Systems for Isolated Environments
 
 #### Title:
