@@ -4,7 +4,7 @@
 **Developing and Implementing Autonomous Governance Systems for Isolated Human Habitats**
 
 #### Abstract:
-This PhD research aims to develop, implement, and evaluate an autonomous governance system tailored for isolated and hazardous environments, such as space colonies. The project will focus on creating a hybrid model that integrates AI-driven management systems with human oversight to ensure safety, ethical decision-making, social stability, and efficient political management. The research will culminate in a program simulation using Python and LangChain, demonstrating the system's capabilities and robustness.
+This research aims to develop, implement, and evaluate an autonomous governance system tailored for isolated and hazardous environments, such as space colonies. The project will focus on creating a hybrid model that integrates AI-driven management systems with human oversight to ensure safety, ethical decision-making, social stability, and efficient political management. The research will culminate in a program simulation using Python and LangChain, demonstrating the system's capabilities and robustness.
 
 #### Research Objectives:
 1. **Design a comprehensive autonomous governance framework for isolated environments.**
@@ -116,4 +116,4 @@ To develop a simulation program demonstrating the capabilities of the autonomous
 - **Development Tools:** Jupyter Notebook, Git
 - **Simulation Tools:** Custom Python scripts and LangChain integration
 
-This PhD research plan aims to make significant contributions to the field of AI and autonomous systems, particularly in managing isolated and hazardous environments, with a specific focus on conflict resolution and political management, paving the way for future advancements in space colonization and other similar domains.
+This research plan aims to make significant contributions to the field of AI and autonomous systems, particularly in managing isolated and hazardous environments, with a specific focus on conflict resolution and political management, paving the way for future advancements in space colonization and other similar domains.
