@@ -1,4 +1,4 @@
-### PhD Research Plan: Autonomous Governance Systems for Isolated Environments
+### PhD Research Plan: AI Autonomous Governance Systems for Isolated Environments
 
 #### Title:
 **Developing and Implementing Autonomous Governance Systems for Isolated Human Habitats**
