@@ -1,6 +1,12 @@
 import threading
 from typing import Dict, Any
 
+from modules.resources import ResourceManagement
+from modules.maintenance import MaintenanceAndRepairs
+from modules.health import HealthMonitoring
+from modules.conflict import ConflictManagementAndPolicy
+from modules.human import HumanSupervision
+
 class AutonomousGovernance:
     def __init__(self):
         self.resource_management = ResourceManagement()
