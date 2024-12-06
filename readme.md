@@ -1,7 +1,8 @@
 ![Image](city_mars_prototype.jpeg)
 
-############ AEON ############
-
+########################## AEON ##########################
+Inspired from and to my scifi novel written in 4 hands by me and AI
+----> https://medium.com/@mario.pba/aeon-chronicles-e37ae94d9a45 <----
 ### AI  Governance Systems ###
 
 
