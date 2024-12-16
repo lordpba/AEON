@@ -6,7 +6,7 @@ import random
 from modules.resources import ResourceManagement
 from modules.maintenance import MaintenanceAndRepairs
 from modules.health import HealthMonitoring
-from modules.conflict import ConflictManagementAndPolicy
+from modules.policy import ConflictManagementAndPolicy
 from modules.human import HumanSupervision
 
 class AutonomousGovernance:

@@ -18,7 +18,7 @@
 |  +-----------------------------------------+  |
 |                                               |
 |  +-----------------------------------------+  |
-|  |         Health Monitoring               |  |
+|  |        Health  Monitoring               |  |
 |  |                                         |  |
 |  |  - Physical Monitoring                  |  |
 |  |  - Psychological Monitoring             |  |
