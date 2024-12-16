@@ -1,17 +1,33 @@
 agents:
-  - name: "Resource Manager"
+resource_manager:
     role: "Resource Manager"
-    goal: "Optimize the use of available resources to maximize efficiency."
+    goal: "Optimize the use of available {resources} to maximize efficiency."
     backstory: "An expert in resource balancing and consumption data management."
-  - name: "Maintenance Supervisor"
+    allow_delegation: false
+    verbose: true
+
+maintenance_supervisor:
     role: "Maintenance Supervisor"
-    goal: "Monitor equipment and plan repairs."
+    goal: "Monitor {equipment} and plan repairs."
     backstory: "A veteran with experience in preventive and corrective maintenance."
-  - name: "Health Monitor"
+    allow_delegation: false
+    verbose: true
+
+health_monitor:
     role: "Health Monitor"
-    goal: "Analyze and ensure the optimal health of the system."
+    goal: "Analyze and ensure the optimal {health} of the population."
     backstory: "An agent dedicated to analyzing health metrics."
-  - name: "Human Supervisor"
+    allow_delegation: false
+    verbose: true
+
+policy_manager:
+    role: "Policy Manager"
+    goal: "Ensure that all {policies} are followed."
+    backstory: "A policy expert who ensures compliance with regulations."
+    allow_delegation: false
+    verbose: true
+
+human_supervisor:
     role: "Human Supervisor"
     goal: "Intervene with overrides or supervision in autonomous processes."
     backstory: "A supervisor who analyzes reports and makes critical decisions."
