@@ -2,11 +2,11 @@ import os
 import yaml
 from crewai import Agent, Task, Crew
 
-# Percorso assoluto al file YAML
+# Absolute path to the YAML file
 current_directory = os.path.dirname(os.path.abspath(__file__))
 file_path = os.path.join(current_directory, "agents.yaml")
 
-# Caricare gli agenti da un file YAML
+# Load agents from a YAML file
 def load_agents_from_yaml(file_path):
     with open(file_path, "r") as file:
         data = yaml.safe_load(file)
@@ -21,41 +21,41 @@ def load_agents_from_yaml(file_path):
             agents.append(agent)
         return agents
 
-# Carica gli agenti
+# Load agents
 agents = load_agents_from_yaml(file_path)
 
-# Definizione dei Task per ciascun agente
+# Define Tasks for each agent
 tasks = [
     Task(
-        description="Analizza i dati delle risorse e ottimizza l'efficienza.",
+        description="Analyze resource data and optimize efficiency.",
         agent=agents[0],
-        expected_output="Suggerimenti per l'allocazione delle risorse."
+        expected_output="Suggestions for resource allocation."
     ),
     Task(
-        description="Monitora lo stato delle attrezzature e pianifica la manutenzione.",
+        description="Monitor equipment status and plan maintenance.",
         agent=agents[1],
-        expected_output="Programma di manutenzione settimanale."
+        expected_output="Weekly maintenance schedule."
     ),
     Task(
-        description="Analizza la salute del sistema e segnala anomalie.",
+        description="Analyze people's health.",
         agent=agents[2],
-        expected_output="Report sulle metriche di salute e anomalie."
+        expected_output="Report on health metrics and prevention."
     ),
     Task(
-        description="Analizza i report degli agenti e prende decisioni critiche.",
+        description="Analyze agents' reports and make critical decisions.",
         agent=agents[3],
-        expected_output="Override o decisioni implementabili."
+        expected_output="Override or implementable decisions."
     )
 ]
 
-# Creazione della Crew
+# Create the Crew
 crew = Crew(agents=agents, tasks=tasks)
 
-# Esecuzione della Crew
-print("Avvio del sistema di governance autonoma...\n")
-results = crew.kickoff()
+# Execute the Crew
+print("Starting the autonomous governance system...\n")
+results = crew.kickoff()  # Ensure this returns a dictionary
 
 # Output
-print("\n--- RISULTATI FINALI ---")
+print("\n--- FINAL RESULTS ---")
 for task, result in results.items():
     print(f"{task}: {result}")
