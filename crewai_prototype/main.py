@@ -33,7 +33,7 @@ agents_config = configs['agents']
 tasks_config = configs['tasks']
 
 # is possible to create a pydanit output structured, like this:
-# this is an example as the agents provide as aoutput a plan for a project based on the
+# this is an example as the agents provide as output a plan based on the
 # input that they ahev received
 
 from typing import List
