@@ -1,0 +1,29 @@
+task:
+resource_optimization:
+  description: >
+    Checks and balances the use of available resources to maximize efficiency.
+    expected_output: a list of recommendations for optimizing resource usage.
+  expected_output: >
+    A list of recommendations for optimizing resource usage.
+
+equipment_maintenance:
+  description: >
+    Monitors equipment and plans repairs.
+    expected_output: a list of equipment that needs maintenance.
+  expected_output: >
+    A list of equipment that needs maintenance.
+
+health_analysis:
+  description: >
+    Analyzes and ensures the optimal health of the population.
+    expected_output: a report on the health metrics of the population.
+  expected_output: >
+    A report on the health metrics of the population.
+
+policy_decision:
+  description: >
+    Ensures that all policies are followed.
+    expected_output: a list of policy violations and recommendations for compliance.
+  expected_output: >
+    A list of policy violations and recommendations for compliance.
+  output_file: policy_report.md

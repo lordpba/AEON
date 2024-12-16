@@ -69,58 +69,95 @@ policy_manager = Agent(
     config=agents_config['policy_manager']
     )
 
+# Creating Tasks
+resource_optimization = Task(
+  config=tasks_config['resource_optimization'],
+  agent=resource_manager
+)
+
+maintenance_routine = Task(
+  config=tasks_config['maintenance_checks'],
+  agent=maintenance_supervisor
+)
+
+health_coordination = Task(
+  config=tasks_config['medical_protocols'],
+  agent=health_monitor,
+  output_pydantic=ProjectPlan # This is the structured output we want
+)
+
+policy_decision = Task(
+    config=tasks_config['policy_decision'],
+    agent=policy_manager,
+    output_pydantic=ProjectPlan # This is the structured output we want
+
+)
 
 
-# Load agents from a YAML file
-def load_agents_from_yaml(file_path):
-    with open(file_path, "r") as file:
-        data = yaml.safe_load(file)
-        agents = []
-        for agent_data in data["agents"]:
-            agent = Agent(
-                name=agent_data["name"],
-                role=agent_data["role"],
-                goal=agent_data["goal"],
-                backstory=agent_data["backstory"]
-            )
-            agents.append(agent)
-        return agents
+# Creating Crew
+crew = Crew(
+  agents=[
+    resource_manager,
+    maintenance_supervisor,
+    health_monitor
+  ],
+  tasks=[
+    resource_optimization,
+    maintenance_routine,
+    health_coordination,
+    policy_decision
+  ],
+  verbose=True
+)
 
-# Load agents
-agents = load_agents_from_yaml(file_path)
+#############INPUTS################
+from IPython.display import display, Markdown
 
-# Define Tasks for each agent
-tasks = [
-    Task(
-        description="Analyze resource data and optimize efficiency.",
-        agent=agents[0],
-        expected_output="Suggestions for resource allocation."
-    ),
-    Task(
-        description="Monitor equipment status and plan maintenance.",
-        agent=agents[1],
-        expected_output="Weekly maintenance schedule."
-    ),
-    Task(
-        description="Analyze people's health.",
-        agent=agents[2],
-        expected_output="Report on health metrics and prevention."
-    ),
-    Task(
-        description="Analyze agents' reports and make critical decisions.",
-        agent=agents[3],
-        expected_output="Override or implementable decisions."
-    )
-]
+project = 'Aeon'
+industry = 'Aeon Technologies'
+project_objectives = 'Manage resources, equipment, health, and policies for optimal performance.'
+team_members = """
+- John Doe (Project Manager)
+- Jane Doe (Software Engineer)
+- Bob Smith (Designer)
+- Alice Johnson (QA Engineer)
+- Tom Brown (QA Engineer)
+"""
+project_requirements = """
+- Develop a comprehensive resource management system for optimal allocation
+- Implement a robust equipment maintenance schedule and tracking system
+- Create a health monitoring system for team members with real-time updates
+- Design a policy management system for decision-making and implementation
+- Ensure the system is scalable and can handle large amounts of data
+- Integrate with existing Aeon Technologies infrastructure and tools
+- Provide a user-friendly interface for all modules
+- Ensure data security and compliance with industry standards
+- Include detailed reporting and analytics capabilities
+- Facilitate communication and collaboration among team members
+"""
 
-# Create the Crew
-crew = Crew(agents=agents, tasks=tasks)
+# Format the dictionary as Markdown for a better display in Jupyter Lab
+formatted_output = f"""
+**Project Type:** {project}
 
-# Execute the Crew
-print("Starting the autonomous governance system...\n")
-results = crew.kickoff()  # Ensure this returns a dictionary
+**Project Objectives:** {project_objectives}
 
-# Output
-print("\n--- FINAL RESULTS ---")
-for task, result in results.items():
-    print(f"{task}: {result}")
+**Industry:** {industry}
+
+**Team Members:**
+{team_members}
+**Project Requirements:**
+{project_requirements}
+"""
+
+# Display the formatted output as Markdown
+print(formatted_output)
+
+import pandas as pd
+
+costs = 0.150 * (crew.usage_metrics.prompt_tokens + crew.usage_metrics.completion_tokens) / 1_000_000
+print(f"Total costs: ${costs:.4f}")
+
+# Convert UsageMetrics instance to a DataFrame
+df_usage_metrics = pd.DataFrame([crew.usage_metrics.dict()])
+print(df_usage_metrics)
