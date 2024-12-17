@@ -99,7 +99,8 @@ crew = Crew(
   agents=[
     resource_manager,
     maintenance_supervisor,
-    health_monitor
+    health_monitor,
+    policy_manager
   ],
   tasks=[
     resource_optimization,
