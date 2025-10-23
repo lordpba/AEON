@@ -1,0 +1,158 @@
+2025-10-23 16:47:51.256 | INFO     | aeon_simulator:__init__:47 - Initializing AEON Colony: AEON Alpha
+2025-10-23 16:47:51.256 | SUCCESS  | aeon_simulator:__init__:81 - AEON Colony initialized successfully
+2025-10-23 16:47:51.256 | INFO     | aeon_simulator:start:178 - Starting AEON Colony Simulation...
+2025-10-23 16:47:51.257 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Alice shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:47:51.257 | INFO     | modules.policy:resolve_conflicts:50 - Conflict resolved: New conflict about noise
+2025-10-23 16:47:51.257 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Charlie shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:47:51.258 | INFO     | modules.policy:update_policies:75 - Policy update: Policy Revision
+2025-10-23 16:47:51.258 | SUCCESS  | aeon_simulator:start:195 - Simulation started!
+2025-10-23 16:47:51.258 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Bob shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:47:51.258 | INFO     | modules.policy:update_policies:72 - Policy removed: policy_9 (obsolete)
+2025-10-23 16:47:51.259 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Diana shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:47:52.257 | INFO     | modules.policy:resolve_conflicts:50 - Conflict resolved: New conflict about policy
+2025-10-23 16:47:52.267 | INFO     | modules.policy:update_policies:75 - Policy update: Policy Revision
+2025-10-23 16:47:52.268 | INFO     | modules.policy:update_policies:72 - Policy removed: policy_4 (obsolete)
+2025-10-23 16:47:52.757 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Alice shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:47:52.767 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Diana shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:47:52.773 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Charlie shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:47:52.773 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Bob shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:47:53.257 | INFO     | modules.policy:resolve_conflicts:50 - Conflict resolved: New conflict about policy
+2025-10-23 16:47:53.267 | INFO     | modules.policy:update_policies:75 - Policy update: New Policy
+2025-10-23 16:47:53.268 | INFO     | modules.policy:update_policies:72 - Policy removed: policy_17 (obsolete)
+2025-10-23 16:47:54.257 | INFO     | modules.policy:resolve_conflicts:50 - Conflict resolved: New conflict about resource allocation
+2025-10-23 16:47:54.268 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Diana shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:47:54.268 | INFO     | modules.policy:update_policies:75 - Policy update: Policy Revision
+2025-10-23 16:47:54.268 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Alice shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:47:54.268 | INFO     | modules.policy:update_policies:72 - Policy removed: policy_2 (obsolete)
+2025-10-23 16:47:54.273 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Charlie shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:47:54.278 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Bob shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:47:55.260 | INFO     | modules.policy:resolve_conflicts:50 - Conflict resolved: New conflict about policy
+2025-10-23 16:47:55.267 | INFO     | modules.policy:update_policies:75 - Policy update: Policy Rejected
+2025-10-23 16:47:55.273 | INFO     | modules.policy:update_policies:72 - Policy removed: policy_13 (obsolete)
+2025-10-23 16:47:55.772 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Alice shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:47:55.777 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Diana shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:47:55.777 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Charlie shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:47:55.788 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Bob shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:47:56.261 | INFO     | modules.policy:resolve_conflicts:50 - Conflict resolved: New conflict about space
+2025-10-23 16:47:56.267 | INFO     | modules.policy:update_policies:75 - Policy update: Policy Rejected
+2025-10-23 16:47:56.278 | INFO     | modules.policy:update_policies:72 - Policy removed: policy_12 (obsolete)
+2025-10-23 16:47:57.265 | INFO     | modules.policy:resolve_conflicts:50 - Conflict resolved: New conflict about noise
+2025-10-23 16:47:57.267 | INFO     | modules.policy:update_policies:75 - Policy update: Policy Rejected
+2025-10-23 16:47:57.278 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Charlie shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:47:57.278 | INFO     | modules.policy:update_policies:72 - Policy removed: policy_11 (obsolete)
+2025-10-23 16:47:57.279 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Diana shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:47:57.284 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Alice shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:47:57.294 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Bob shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:47:58.266 | INFO     | modules.policy:resolve_conflicts:50 - Conflict resolved: New conflict about policy
+2025-10-23 16:47:58.267 | INFO     | modules.policy:update_policies:75 - Policy update: Policy Revision
+2025-10-23 16:47:58.283 | INFO     | modules.policy:update_policies:72 - Policy removed: policy_12 (obsolete)
+2025-10-23 16:47:58.778 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Charlie shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:47:58.783 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Diana shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:47:58.794 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Alice shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:47:58.794 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Bob shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:47:59.268 | INFO     | modules.policy:resolve_conflicts:50 - Conflict resolved: New conflict about resource allocation
+2025-10-23 16:47:59.268 | INFO     | modules.policy:update_policies:75 - Policy update: New Policy
+2025-10-23 16:47:59.284 | INFO     | modules.policy:update_policies:72 - Policy removed: policy_2 (obsolete)
+2025-10-23 16:48:00.268 | INFO     | modules.policy:resolve_conflicts:50 - Conflict resolved: New conflict about space
+2025-10-23 16:48:00.278 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Charlie shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:00.278 | INFO     | modules.policy:update_policies:75 - Policy update: New Policy
+2025-10-23 16:48:00.283 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Diana shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:00.284 | INFO     | modules.policy:update_policies:72 - Policy removed: policy_15 (obsolete)
+2025-10-23 16:48:00.294 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Alice shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:00.299 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Bob shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:01.268 | INFO     | modules.policy:resolve_conflicts:50 - Conflict resolved: New conflict about noise
+2025-10-23 16:48:01.278 | INFO     | modules.policy:update_policies:75 - Policy update: Policy Rejected
+2025-10-23 16:48:01.289 | INFO     | modules.policy:update_policies:72 - Policy removed: policy_3 (obsolete)
+2025-10-23 16:48:01.782 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Charlie shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:01.783 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Diana shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:01.794 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Alice shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:01.800 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Bob shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:02.268 | INFO     | modules.policy:resolve_conflicts:50 - Conflict resolved: New conflict about space
+2025-10-23 16:48:02.278 | INFO     | modules.policy:update_policies:75 - Policy update: Policy Rejected
+2025-10-23 16:48:02.289 | INFO     | modules.policy:update_policies:72 - Policy removed: policy_10 (obsolete)
+2025-10-23 16:48:03.271 | INFO     | modules.policy:resolve_conflicts:50 - Conflict resolved: New conflict about policy
+2025-10-23 16:48:03.282 | INFO     | modules.policy:update_policies:75 - Policy update: New Policy
+2025-10-23 16:48:03.289 | INFO     | modules.policy:update_policies:72 - Policy removed: policy_16 (obsolete)
+2025-10-23 16:48:03.289 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Diana shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:03.295 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Charlie shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:03.305 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Bob shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:03.315 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Alice shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:04.271 | INFO     | modules.policy:resolve_conflicts:50 - Conflict resolved: New conflict about policy
+2025-10-23 16:48:04.282 | INFO     | modules.policy:update_policies:75 - Policy update: Policy Revision
+2025-10-23 16:48:04.289 | INFO     | modules.policy:update_policies:72 - Policy removed: policy_1 (obsolete)
+2025-10-23 16:48:04.789 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Diana shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:04.800 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Charlie shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:04.805 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Bob shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:04.816 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Alice shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:05.271 | INFO     | modules.policy:resolve_conflicts:50 - Conflict resolved: New conflict about space
+2025-10-23 16:48:05.287 | INFO     | modules.policy:update_policies:75 - Policy update: Policy Revision
+2025-10-23 16:48:05.292 | INFO     | modules.policy:update_policies:72 - Policy removed: policy_8 (obsolete)
+2025-10-23 16:48:06.271 | INFO     | modules.policy:resolve_conflicts:50 - Conflict resolved: New conflict about space
+2025-10-23 16:48:06.289 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Diana shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:06.295 | INFO     | modules.policy:update_policies:75 - Policy update: New Policy
+2025-10-23 16:48:06.300 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Charlie shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:06.300 | INFO     | modules.policy:update_policies:72 - Policy removed: policy_4 (obsolete)
+2025-10-23 16:48:06.310 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Bob shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:06.321 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Alice shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:07.271 | INFO     | modules.policy:resolve_conflicts:50 - Conflict resolved: New conflict about space
+2025-10-23 16:48:07.297 | INFO     | modules.policy:update_policies:75 - Policy update: Policy Revision
+2025-10-23 16:48:07.302 | INFO     | modules.policy:update_policies:72 - Policy removed: policy_5 (obsolete)
+2025-10-23 16:48:07.789 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Diana shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:07.805 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Charlie shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:07.811 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Bob shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:07.821 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Alice shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:08.271 | INFO     | modules.policy:resolve_conflicts:50 - Conflict resolved: New conflict about policy
+2025-10-23 16:48:08.297 | INFO     | modules.policy:update_policies:75 - Policy update: New Policy
+2025-10-23 16:48:08.312 | INFO     | modules.policy:update_policies:72 - Policy removed: policy_6 (obsolete)
+2025-10-23 16:48:09.271 | INFO     | modules.policy:resolve_conflicts:50 - Conflict resolved: New conflict about space
+2025-10-23 16:48:09.290 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Diana shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:09.297 | INFO     | modules.policy:update_policies:75 - Policy update: Policy Rejected
+2025-10-23 16:48:09.300 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Charlie shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:09.312 | INFO     | modules.policy:update_policies:72 - Policy removed: policy_2 (obsolete)
+2025-10-23 16:48:09.313 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Bob shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:09.323 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Alice shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:10.271 | INFO     | modules.policy:resolve_conflicts:50 - Conflict resolved: New conflict about policy
+2025-10-23 16:48:10.297 | INFO     | modules.policy:update_policies:75 - Policy update: New Policy
+2025-10-23 16:48:10.318 | INFO     | modules.policy:update_policies:72 - Policy removed: policy_3 (obsolete)
+2025-10-23 16:48:10.790 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Diana shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:10.815 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Charlie shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:10.821 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Bob shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:10.823 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Alice shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:11.276 | INFO     | modules.policy:resolve_conflicts:50 - Conflict resolved: New conflict about policy
+2025-10-23 16:48:11.297 | INFO     | modules.policy:update_policies:75 - Policy update: Policy Revision
+2025-10-23 16:48:11.323 | INFO     | modules.policy:update_policies:72 - Policy removed: policy_3 (obsolete)
+2025-10-23 16:48:12.280 | INFO     | modules.policy:resolve_conflicts:50 - Conflict resolved: New conflict about space
+2025-10-23 16:48:12.290 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Diana shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:12.297 | INFO     | modules.policy:update_policies:75 - Policy update: New Policy
+2025-10-23 16:48:12.315 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Charlie shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:12.321 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Bob shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:12.323 | INFO     | modules.policy:update_policies:72 - Policy removed: policy_11 (obsolete)
+2025-10-23 16:48:12.323 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Alice shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:13.280 | INFO     | modules.policy:resolve_conflicts:50 - Conflict resolved: New conflict about space
+2025-10-23 16:48:13.297 | INFO     | modules.policy:update_policies:75 - Policy update: New Policy
+2025-10-23 16:48:13.323 | INFO     | modules.policy:update_policies:72 - Policy removed: policy_10 (obsolete)
+2025-10-23 16:48:13.791 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Diana shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:13.816 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Charlie shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:13.821 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Bob shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:13.831 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Alice shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:14.284 | INFO     | modules.policy:resolve_conflicts:50 - Conflict resolved: New conflict about policy
+2025-10-23 16:48:14.305 | INFO     | modules.policy:update_policies:75 - Policy update: Policy Revision
+2025-10-23 16:48:14.326 | INFO     | modules.policy:update_policies:72 - Policy removed: policy_2 (obsolete)
+2025-10-23 16:48:15.287 | INFO     | modules.policy:resolve_conflicts:50 - Conflict resolved: New conflict about policy
+2025-10-23 16:48:15.291 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Diana shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:15.305 | INFO     | modules.policy:update_policies:75 - Policy update: Policy Revision
+2025-10-23 16:48:15.321 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Charlie shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:15.326 | INFO     | modules.policy:update_policies:72 - Policy removed: policy_3 (obsolete)
+2025-10-23 16:48:15.326 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Bob shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:15.332 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Alice shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:16.289 | INFO     | modules.policy:resolve_conflicts:50 - Conflict resolved: New conflict about noise
+2025-10-23 16:48:16.310 | INFO     | modules.policy:update_policies:75 - Policy update: Policy Rejected
+2025-10-23 16:48:16.326 | INFO     | modules.policy:update_policies:72 - Policy removed: policy_7 (obsolete)
+2025-10-23 16:48:16.794 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Diana shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:16.794 | INFO     | aeon_simulator:main:329 - Shutdown requested
+2025-10-23 16:48:16.825 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Charlie shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:16.830 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Bob shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:16.835 | INFO     | modules.health:plan_mental_health_support:84 - Mental Health Support: Alice shows high stress. Suggesting relaxation techniques.
+2025-10-23 16:48:16.846 | SUCCESS  | aeon_simulator:save_state:305 - State saved to saves/manual_save.json
+2025-10-23 16:48:16.856 | INFO     | aeon_simulator:stop:233 - Simulation stopped
+2025-10-23 16:48:16.867 | INFO     | aeon_simulator:main:332 - Simulation ended

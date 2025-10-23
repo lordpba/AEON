@@ -435,7 +435,7 @@ def main():
         # Health & Society tab
         st.subheader("⚕️ Health & Social Cohesion")
         
-        col1, col2 = st.columns(2)
+        col1, col2, col3 = st.columns(3)
         
         with col1:
             st.markdown("### 🏥 Population Health")
@@ -456,6 +456,22 @@ def main():
                 st.warning(f"⚠️ {conflicts['active']} conflict(s) require attention")
             else:
                 st.success("✅ Social harmony maintained")
+        
+        with col3:
+            st.markdown("### 📋 Active Policies")
+            if st.session_state.simulator:
+                policies = st.session_state.simulator.policy.get_policy_overview()
+                if policies:
+                    # Mostra le ultime 10 policy (o tutte se meno di 10)
+                    recent_policies = list(policies.items())[-10:]
+                    for policy_id, description in recent_policies:
+                        st.write(f"• **{policy_id}**: {description}")
+                    if len(policies) > 10:
+                        st.caption(f"... e altre {len(policies) - 10} policy attive")
+                else:
+                    st.write("Nessuna policy attiva al momento")
+            else:
+                st.write("Simulatore non inizializzato")
     
     with tab5:
         # Events & Log tab

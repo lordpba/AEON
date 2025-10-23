@@ -12,8 +12,10 @@ class ColonyConfig:
     """Configuration for the Mars colony simulation"""
     
     # Colony basics
+    
+    # Simulation parameters
     name: str = "AEON Alpha"
-    population_size: int = 50
+    population_size: int = 5
     starting_resources: Dict[str, float] = field(default_factory=lambda: {
         "water": 10000.0,      # liters
         "food": 5000.0,        # kg
@@ -21,9 +23,8 @@ class ColonyConfig:
         "oxygen": 100000.0,    # liters
         "building_materials": 1000.0  # units
     })
-    
     # Simulation parameters
-    time_scale: float = 1.0  # 1.0 = real-time, higher = faster
+    time_scale: float = 0.1  # 1.0 = real-time, higher = faster
     sol_duration: int = 24.65  # Mars day in hours
     
     # Resource consumption rates (per person per sol)
