@@ -1,5 +1,6 @@
 """
-Simulation Engine for AEON - Time-based event and state management
+Simulation Engine for AEON GovTech Platform
+Time-based event and state management for smart city simulation
 """
 import time
 import random
@@ -12,15 +13,15 @@ from loguru import logger
 
 
 class EventType(Enum):
-    """Types of events that can occur in the simulation"""
-    SOLAR_STORM = "solar_storm"
-    EQUIPMENT_FAILURE = "equipment_failure"
-    MEDICAL_EMERGENCY = "medical_emergency"
-    SOCIAL_CONFLICT = "social_conflict"
-    RESOURCE_CRISIS = "resource_crisis"
-    DISCOVERY = "discovery"
-    BIRTH = "birth"
-    SYSTEM_UPGRADE = "system_upgrade"
+    """Types of events that can occur in municipal simulation"""
+    INFRASTRUCTURE_FAILURE = "infrastructure_failure"
+    PUBLIC_COMPLAINT = "public_complaint"
+    EMERGENCY_CALL = "emergency_call"
+    ENVIRONMENTAL_ALERT = "environmental_alert"
+    BUDGET_ISSUE = "budget_issue"
+    CIVIC_EVENT = "civic_event"
+    POLICY_PROPOSAL = "policy_proposal"
+    SERVICE_OUTAGE = "service_outage"
 
 
 class EventSeverity(Enum):
@@ -33,10 +34,10 @@ class EventSeverity(Enum):
 
 @dataclass
 class SimulationEvent:
-    """Represents an event in the simulation"""
+    """Represents an event in the municipal simulation"""
     event_type: EventType
     severity: EventSeverity
-    timestamp: float  # Sol number
+    timestamp: float  # Day number
     description: str
     affected_systems: List[str] = field(default_factory=list)
     requires_human_intervention: bool = False
@@ -62,33 +63,33 @@ class SimulationEvent:
 class SimulationClock:
     """Manages simulation time progression"""
     
-    def __init__(self, time_scale: float = 1.0, sol_duration_hours: float = 24.65):
+    def __init__(self, time_scale: float = 1.0, day_duration_hours: float = 24.0):
         self.time_scale = time_scale  # Multiplier for simulation speed
-        self.sol_duration = sol_duration_hours * 3600  # Convert to seconds
-        self.current_sol = 0.0
+        self.day_duration = day_duration_hours * 3600  # Convert to seconds
+        self.current_day = 0.0
         self.start_time = time.time()
         self.paused = False
         self.pause_time = 0.0
         
-    def get_current_sol(self) -> float:
-        """Get the current sol (Mars day) number"""
+    def get_current_day(self) -> float:
+        """Get the current day number"""
         if self.paused:
-            return self.current_sol
+            return self.current_day
         
         elapsed_real_time = time.time() - self.start_time - self.pause_time
         elapsed_simulation_time = elapsed_real_time * self.time_scale
-        self.current_sol = elapsed_simulation_time / self.sol_duration
-        return self.current_sol
+        self.current_day = elapsed_simulation_time / self.day_duration
+        return self.current_day
     
-    def get_sol_progress(self) -> float:
-        """Get progress through current sol (0.0 to 1.0)"""
-        return self.get_current_sol() % 1.0
+    def get_day_progress(self) -> float:
+        """Get progress through current day (0.0 to 1.0)"""
+        return self.get_current_day() % 1.0
     
     def get_local_time(self) -> str:
-        """Get local time in Mars colony (HH:MM format)"""
-        progress = self.get_sol_progress()
-        hours = int(progress * 24.65)
-        minutes = int((progress * 24.65 - hours) * 60)
+        """Get local time (HH:MM format)"""
+        progress = self.get_day_progress()
+        hours = int(progress * 24.0)
+        minutes = int((progress * 24.0 - hours) * 60)
         return f"{hours:02d}:{minutes:02d}"
     
     def pause(self):
@@ -113,33 +114,128 @@ class EventGenerator:
     
     def __init__(self, event_probabilities: Dict[str, float]):
         self.probabilities = event_probabilities
-        self.last_check_sol = 0.0
+        self.last_check_day = 0.0
         
-    def check_for_events(self, current_sol: float, colony_state: Dict[str, Any]) -> List[SimulationEvent]:
+    def check_for_events(self, current_day: float, city_state: Dict[str, Any]) -> List[SimulationEvent]:
         """Check if any events should occur"""
-        if current_sol - self.last_check_sol < 0.1:  # Check at most every 0.1 sol
+        if current_day - self.last_check_day < 0.1:  # Check at most every 0.1 day
             return []
         
-        self.last_check_sol = current_sol
+        self.last_check_day = current_day
         events = []
         
-        # Check each event type
-        if random.random() < self.probabilities.get("solar_storm", 0.02):
-            events.append(self._generate_solar_storm(current_sol))
-        
-        if random.random() < self.probabilities.get("equipment_failure", 0.05):
-            events.append(self._generate_equipment_failure(current_sol, colony_state))
-        
-        if random.random() < self.probabilities.get("medical_emergency", 0.03):
-            events.append(self._generate_medical_emergency(current_sol))
-        
-        if random.random() < self.probabilities.get("conflict", 0.04):
-            events.append(self._generate_conflict(current_sol))
-        
-        if random.random() < self.probabilities.get("discovery", 0.01):
-            events.append(self._generate_discovery(current_sol))
+        # Municipal event checks
+        if random.random() < self.probabilities.get("infrastructure_failure", 0.03):
+            events.append(self._generate_infrastructure_failure(current_day, city_state))
+        if random.random() < self.probabilities.get("public_complaint", 0.15):
+            events.append(self._generate_public_complaint(current_day))
+        if random.random() < self.probabilities.get("emergency_call", 0.08):
+            events.append(self._generate_emergency_call(current_day))
+        if random.random() < self.probabilities.get("environmental_alert", 0.05):
+            events.append(self._generate_environmental_alert(current_day))
+        if random.random() < self.probabilities.get("budget_issue", 0.02):
+            events.append(self._generate_budget_issue(current_day))
+        if random.random() < self.probabilities.get("civic_event", 0.10):
+            events.append(self._generate_civic_event(current_day))
+        if random.random() < self.probabilities.get("policy_proposal", 0.06):
+            events.append(self._generate_policy_proposal(current_day))
         
         return events
+
+    def _generate_infrastructure_failure(self, day: float, state: Dict[str, Any]) -> SimulationEvent:
+        components = [
+            "roads", "bridges", "public_buildings", "street_lighting",
+            "sewers", "water_pipes", "power_grid"
+        ]
+        affected = random.choice(components)
+        severity = random.choice([EventSeverity.LOW, EventSeverity.MEDIUM, EventSeverity.HIGH])
+        return SimulationEvent(
+            event_type=EventType.INFRASTRUCTURE_FAILURE,
+            severity=severity,
+            timestamp=day,
+            description=f"Infrastructure failure: {affected}",
+            affected_systems=[affected],
+            requires_human_intervention=severity in [EventSeverity.MEDIUM, EventSeverity.HIGH],
+            consequences={
+                "repair_time_hours": severity.value * 4,
+                "budget_cost": severity.value * 1000
+            }
+        )
+
+    def _generate_public_complaint(self, day: float) -> SimulationEvent:
+        topics = ["noise", "traffic", "waste_collection", "public_transport", "street_lights"]
+        topic = random.choice(topics)
+        return SimulationEvent(
+            event_type=EventType.PUBLIC_COMPLAINT,
+            severity=EventSeverity.LOW,
+            timestamp=day,
+            description=f"Public complaint about {topic}",
+            affected_systems=[topic],
+            requires_human_intervention=False,
+            consequences={"satisfaction_impact": -2}
+        )
+
+    def _generate_emergency_call(self, day: float) -> SimulationEvent:
+        emergencies = ["fire", "accident", "medical", "flooding"]
+        e = random.choice(emergencies)
+        severity = random.choice([EventSeverity.MEDIUM, EventSeverity.HIGH])
+        return SimulationEvent(
+            event_type=EventType.EMERGENCY_CALL,
+            severity=severity,
+            timestamp=day,
+            description=f"Emergency call: {e}",
+            affected_systems=["public_safety"],
+            requires_human_intervention=True,
+            consequences={"response_time_min": 10 / severity.value}
+        )
+
+    def _generate_environmental_alert(self, day: float) -> SimulationEvent:
+        alerts = ["air_quality", "heatwave", "heavy_rain", "windstorm"]
+        a = random.choice(alerts)
+        return SimulationEvent(
+            event_type=EventType.ENVIRONMENTAL_ALERT,
+            severity=EventSeverity.MEDIUM,
+            timestamp=day,
+            description=f"Environmental alert: {a}",
+            affected_systems=["environment"],
+            requires_human_intervention=False,
+            consequences={"preparedness_actions": True}
+        )
+
+    def _generate_budget_issue(self, day: float) -> SimulationEvent:
+        return SimulationEvent(
+            event_type=EventType.BUDGET_ISSUE,
+            severity=EventSeverity.MEDIUM,
+            timestamp=day,
+            description="Budget shortfall detected",
+            affected_systems=["finance"],
+            requires_human_intervention=True,
+            consequences={"deficit_percent": round(random.uniform(5, 15), 1)}
+        )
+
+    def _generate_civic_event(self, day: float) -> SimulationEvent:
+        events = ["community_festival", "public_meeting", "cleanup_day", "workshop"]
+        e = random.choice(events)
+        return SimulationEvent(
+            event_type=EventType.CIVIC_EVENT,
+            severity=EventSeverity.LOW,
+            timestamp=day,
+            description=f"Civic event: {e}",
+            affected_systems=["community"],
+            requires_human_intervention=False,
+            consequences={"engagement_boost": 5}
+        )
+
+    def _generate_policy_proposal(self, day: float) -> SimulationEvent:
+        return SimulationEvent(
+            event_type=EventType.POLICY_PROPOSAL,
+            severity=EventSeverity.LOW,
+            timestamp=day,
+            description="New policy proposal submitted",
+            affected_systems=["governance"],
+            requires_human_intervention=False,
+            consequences={}
+        )
     
     def _generate_solar_storm(self, sol: float) -> SimulationEvent:
         """Generate a solar storm event"""
@@ -241,14 +337,14 @@ class SimulationEngine:
         self.config = config
         self.clock = SimulationClock(
             time_scale=config.time_scale,
-            sol_duration_hours=config.sol_duration
+            day_duration_hours=getattr(config, "day_duration", 24)
         )
         self.event_generator = EventGenerator(config.event_probabilities)
         self.events: List[SimulationEvent] = []
         self.state_history: List[Dict[str, Any]] = []
         self.callbacks: Dict[str, List[Callable]] = {
             "on_event": [],
-            "on_sol_change": [],
+            "on_day_change": [],
             "on_state_update": []
         }
         self.running = False
@@ -270,7 +366,7 @@ class SimulationEngine:
         """Add a new event to the simulation"""
         self.events.append(event)
         self.trigger_callbacks("on_event", event)
-        logger.info(f"Sol {event.timestamp:.2f}: {event.description}")
+        logger.info(f"Day {event.timestamp:.2f}: {event.description}")
     
     def get_active_events(self) -> List[SimulationEvent]:
         """Get all unresolved events"""
@@ -279,29 +375,29 @@ class SimulationEngine:
     def resolve_event(self, event: SimulationEvent):
         """Mark an event as resolved"""
         event.resolved = True
-        event.resolution_time = self.clock.get_current_sol()
+        event.resolution_time = self.clock.get_current_day()
         logger.info(f"Event resolved: {event.description}")
     
     def update(self, colony_state: Dict[str, Any]) -> List[SimulationEvent]:
         """Update simulation state - called each frame/tick"""
-        current_sol = self.clock.get_current_sol()
+        current_day = self.clock.get_current_day()
         
         # Check for new events
-        new_events = self.event_generator.check_for_events(current_sol, colony_state)
+        new_events = self.event_generator.check_for_events(current_day, colony_state)
         for event in new_events:
             self.add_event(event)
         
-        # Trigger sol change callbacks
-        if int(current_sol) > int(getattr(self, '_last_sol', 0)):
-            self.trigger_callbacks("on_sol_change", int(current_sol))
-            self._last_sol = current_sol
+        # Trigger day change callbacks
+        if int(current_day) > int(getattr(self, '_last_day', 0)):
+            self.trigger_callbacks("on_day_change", int(current_day))
+            self._last_day = current_day
         
         return new_events
     
     def save_state(self, filepath: str):
         """Save simulation state to file"""
         state = {
-            "current_sol": self.clock.get_current_sol(),
+            "current_day": self.clock.get_current_day(),
             "events": [e.to_dict() for e in self.events],
             "time_scale": self.clock.time_scale
         }
