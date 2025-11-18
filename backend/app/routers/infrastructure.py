@@ -23,7 +23,10 @@ async def perform_maintenance(component_key: str) -> Dict[str, Any]:
         raise HTTPException(status_code=503, detail="Simulator not running")
     try:
         # prioritize and perform maintenance for the specific component
-        success = module.perform_maintenance(component_key, current_day=0.0)
+        current_day = 0.0
+        if simulator_manager.simulator:
+            current_day = simulator_manager.simulator.engine.clock.get_current_day()
+        success = module.perform_maintenance(component_key, current_day=current_day)
         return {"success": success, "component": component_key}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))

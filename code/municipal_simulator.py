@@ -98,6 +98,9 @@ class AEONMunicipalSimulator:
         self.running = True
         logger.info("Starting municipal simulation...")
         
+        # Provide engine with a lightweight state provider
+        self.engine.set_state_provider(self._build_engine_state)
+
         # Start simulation engine
         self.engine.start()
         
@@ -161,6 +164,29 @@ class AEONMunicipalSimulator:
             
             # Get active events
             self.current_state.active_events = len(self.engine.get_active_events())
+
+    def _build_engine_state(self) -> Dict[str, Any]:
+        """Build a compact snapshot for the engine's event generator."""
+        try:
+            infra = self.infrastructure.preventive_monitoring()
+            services = self.public_services.get_status()
+            wellbeing = self.citizen_wellbeing.get_status()
+            governance = self.governance.get_governance_status()
+            return {
+                "infrastructure": {
+                    "overall_health": infra.get("overall_health", 100.0)
+                },
+                "services": services,
+                "wellbeing": {
+                    "public_sentiment": wellbeing.get("public_sentiment", 0.0),
+                    "average_satisfaction": wellbeing.get("average_satisfaction", 75.0)
+                },
+                "governance": {
+                    "active_proposals": governance.get("active_proposals", 0)
+                }
+            }
+        except Exception:
+            return {}
     
     def get_state(self) -> Dict[str, Any]:
         """Get current simulation state"""

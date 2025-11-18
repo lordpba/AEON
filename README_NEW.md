@@ -1,21 +1,19 @@
-# 🚀 AEON - Autonomous Governance System for Space Colonies
+# 🚀 AEON - GovTech Municipal Operations Platform
 
-![AEON Banner](city_mars_prototype.jpeg)
+![AEON Banner](archive/prototypes/city_mars_prototype.jpeg)
 
 ## 🌟 Overview
 
-**AEON** (Autonomous Environment Operations Network) is an AI-powered simulation framework for managing isolated human communities in space. Inspired by a sci-fi novel, this project combines cutting-edge AI governance with realistic simulation mechanics to create both a research tool and an interactive "game" experience.
+**AEON** (Autonomous Environment Operations Network) è stato rifocalizzato su un POC GovTech per la gestione operativa di comunità municipali. L'engine di simulazione è day-based, l'API è esposta via FastAPI con aggiornamenti WebSocket, e un Advisor AI opzionale usa Groq (Llama).
 
 ### Key Features
 
-- 🤖 **AI-Driven Governance** - Autonomous decision-making systems
-- 🌊 **Resource Management** - Track water, food, energy, oxygen, and materials
-- 🔧 **System Maintenance** - Realistic degradation and repair mechanics
-- ⚕️ **Health Monitoring** - Physical and psychological wellbeing tracking
-- ⚖️ **Conflict Resolution** - Democratic governance and policy management
-- 🎲 **Dynamic Events** - Solar storms, equipment failures, discoveries
-- 📊 **Interactive Dashboard** - Real-time visualization and control
-- 💾 **Save/Load System** - Persistent simulation states
+- 🏙️ **Municipal Simulation** - Eventi civici, infrastruttura, servizi pubblici, governance
+- 🤖 **AI Advisor (Groq)** - Raccomandazioni operative e analisi sintetiche
+- 🛠️ **Infrastruttura & Servizi** - Manutenzione preventiva e allocazione risorse
+- 🗳️ **Governance** - Proposte/policy con voto e quorum
+- 🔔 **Eventi Dinamici** - Emergenze, allarmi ambientali, lamentele pubbliche
+- 🔌 **API + WebSocket** - FastAPI + broadcast real-time per dashboard esterne
 
 ## 🎯 Project Goals
 
@@ -25,13 +23,12 @@
 4. Provide a testbed for decision-making algorithms
 5. Inspire future space colonization efforts
 
-## 📦 Installation
+## 📦 Installazione
 
 ### Prerequisites
 
 - Python 3.9+
-- pip package manager
-- (Optional) Node.js for DAO components
+- pip
 
 ### Quick Start
 
@@ -46,29 +43,30 @@ cd AEON
 pip install -r requirements.txt
 ```
 
-3. **Run the simulation**
+3. **Avvia il backend API**
 
-**Option A: Command-line simulation**
 ```bash
-cd code
-python aeon_simulator.py
+cd backend/app
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-**Option B: Interactive dashboard** (Recommended)
-```bash
-cd code
-streamlit run dashboard.py
-```
+- Health: `GET http://localhost:8000/health`
+- WebSocket live: `ws://localhost:8000/ws/simulation`
+- Esempi API: `/api/v1/services/status`, `/api/v1/infrastructure/status`, `/api/v1/ai/analyze`
 
-The dashboard will open in your browser at `http://localhost:8501`
+AI opzionale (Groq):
+```bash
+export GROQ_API_KEY="<la_tua_chiave>"
+# opzionale: export GROQ_MODEL="llama-3.1-70b-versatile"
+```
 
 ## 🎮 How to Use
 
-### Dashboard Interface
+### Interfaccia (frontend esterno)
 
-1. **Configure Your Colony**
-   - Set colony name, population, and simulation speed
-   - Click "Start Simulation"
+1. **Collega una dashboard** (React/Vite suggerito)
+   - Connetti al WebSocket per aggiornamenti (`/ws/simulation`)
+   - Chiama le API per azioni (es. manutenzione, proposte)
 
 2. **Monitor Status**
    - **Overview Tab**: General statistics and trends
@@ -77,35 +75,21 @@ The dashboard will open in your browser at `http://localhost:8501`
    - **Health & Society Tab**: Population wellbeing and conflicts
    - **Events & Log Tab**: History of events and crises
 
-3. **Interact with the Colony**
-   - Pause/Resume simulation
-   - Adjust time scale (0.1x to 100x speed)
-   - Perform manual repairs
-   - Resolve conflicts
-   - Save simulation state
+3. **Interagisci**
+   - Pianifica manutenzioni, alloca servizi
+   - Crea/vota proposte di governance
+   - Richiedi analisi all'AI Advisor
 
-### Command-Line Simulation
+### Esempio programmatico (Python)
 
 ```python
-from aeon_simulator import AEONColonySimulator
-from config import ColonyConfig
+from municipal_simulator import AEONMunicipalSimulator
+from config import CommunityConfig
 
-# Create custom configuration
-config = ColonyConfig(
-    name="Mars Base Alpha",
-    population_size=100,
-    time_scale=10.0  # 10x speed
-)
-
-# Initialize and start
-simulator = AEONColonySimulator(config)
-simulator.start()
-
-# Get status
-print(simulator.get_summary())
-
-# Save state
-simulator.save_state("my_colony.json")
+sim = AEONMunicipalSimulator(CommunityConfig(name="Small Town"))
+sim.start()
+print(sim.get_detailed_status()["time"])  # stato rapido
+sim.stop()
 ```
 
 ## 🏗️ Project Structure
@@ -113,8 +97,7 @@ simulator.save_state("my_colony.json")
 ```
 AEON/
 ├── code/
-│   ├── aeon_simulator.py       # Main simulation orchestrator
-│   ├── dashboard.py            # Streamlit web interface
+│   ├── municipal_simulator.py  # Municipal simulator orchestrator
 │   ├── config.py               # Configuration management
 │   ├── simulation_engine.py    # Time and event management
 │   └── modules/
@@ -123,7 +106,7 @@ AEON/
 │       ├── health.py           # Health monitoring
 │       ├── policy.py           # Governance and conflicts
 │       └── human.py            # Human supervision
-├── DAO/                        # Blockchain governance (future)
+├── backend/                    # FastAPI backend (API + WebSocket)
 ├── saves/                      # Saved simulation states
 ├── logs/                       # Simulation logs
 └── requirements.txt            # Python dependencies
@@ -173,10 +156,9 @@ Play AEON as a colony management game:
 - [x] Interactive dashboard
 
 ### Phase 2: AI Integration 🚧 (IN PROGRESS)
-- [ ] LangChain agent integration
-- [ ] AI decision-making for resource allocation
-- [ ] Predictive maintenance using ML
-- [ ] Natural language interaction
+- [x] Integrazione Groq (endpoint base)
+- [ ] Prompt avanzati e azioni consigliate
+- [ ] Analisi budget/emergenze/sentiment
 
 ### Phase 3: Advanced Features 📋 (PLANNED)
 - [ ] DAO integration for democratic governance
@@ -239,7 +221,7 @@ AEON is based on research in:
 ## 🙏 Acknowledgments
 
 - Inspired by games like Surviving Mars, Rimworld, Oxygen Not Included
-- Built with Python, Streamlit, LangChain, and CrewAI
+- Built with Python, FastAPI, and Groq (opzionale)
 - Mars data from NASA and ESA missions
 
 ---

@@ -348,6 +348,8 @@ class SimulationEngine:
             "on_state_update": []
         }
         self.running = False
+        self._thread = None
+        self._state_provider = None  # Optional callback returning dict state
         
     def register_callback(self, event_name: str, callback: Callable):
         """Register a callback function for specific events"""
@@ -393,6 +395,40 @@ class SimulationEngine:
             self._last_day = current_day
         
         return new_events
+
+    # --- Runtime control ---
+    def set_state_provider(self, provider: Callable[[], Dict[str, Any]]):
+        """Set a callable that returns the current city/colony state for event generation."""
+        self._state_provider = provider
+
+    def _run_loop(self):
+        """Background loop to update events periodically."""
+        self._last_day = 0
+        while self.running:
+            try:
+                state = self._state_provider() if callable(self._state_provider) else {}
+                self.update(state)
+                time.sleep(1.0)
+            except Exception as e:
+                logger.error(f"SimulationEngine loop error: {e}")
+                time.sleep(1.0)
+
+    def start(self):
+        """Start the background update loop."""
+        if self.running:
+            return
+        self.running = True
+        import threading
+        self._thread = threading.Thread(target=self._run_loop, name="SimEngine", daemon=True)
+        self._thread.start()
+
+    def stop(self):
+        """Stop the background update loop."""
+        if not self.running:
+            return
+        self.running = False
+        if self._thread and self._thread.is_alive():
+            self._thread.join(timeout=2.0)
     
     def save_state(self, filepath: str):
         """Save simulation state to file"""

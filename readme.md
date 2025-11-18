@@ -1,4 +1,4 @@
-![Image](city_mars_prototype.jpeg)
+![Image](archive/prototypes/city_mars_prototype.jpeg)
 
 ########################## AEON ##########################
 Inspired from and to my scifi novel written in 4 hands by me and AI
