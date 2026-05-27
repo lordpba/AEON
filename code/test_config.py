@@ -1,33 +1,42 @@
 """Quick test of AEON simulation - No external dependencies"""
 import sys
-sys.path.insert(0, '/workspaces/AEON/code')
+from pathlib import Path
 
-from config import ColonyConfig
+# Set up paths
+CODE_DIR = Path(__file__).resolve().parent
+sys.path.insert(0, str(CODE_DIR))
 
-print("🚀 AEON Configuration Test")
+from config import CommunityConfig, DEFAULT_CONFIG
+
+print("🚀 AEON Community Configuration Test")
 print("=" * 50)
 
 # Test configuration
-config = ColonyConfig(
-    name="Test Colony Alpha",
-    population_size=50,
+config = CommunityConfig(
+    name="Test Municipality Alpha",
+    population_size=5000,
     time_scale=1.0
 )
 
 print(f"\n✅ Configuration loaded successfully!")
-print(f"\nColony Details:")
+print(f"\nCommunity Details:")
 print(f"  Name: {config.name}")
 print(f"  Population: {config.population_size}")
 print(f"  Time Scale: {config.time_scale}x")
-print(f"\nStarting Resources:")
-for resource, amount in config.starting_resources.items():
-    print(f"  {resource.capitalize()}: {amount:.0f}")
+print(f"  Annual Budget: {config.annual_budget} EUR")
 
-print(f"\nConsumption Rates (per person per sol):")
-for resource, rate in config.consumption_rates.items():
-    print(f"  {resource.capitalize()}: {rate:.1f}")
-    days_supply = config.starting_resources.get(resource, 0) / (rate * config.population_size)
-    print(f"    → Supply lasts: {days_supply:.1f} sols")
+print(f"\nService Capacities:")
+for service, capacity in config.service_capacity.items():
+    print(f"  {service.replace('_', ' ').title()}: {capacity:.1f}")
+
+print(f"\nConsumption Rates (per person per day):")
+for service, rate in config.consumption_rates.items():
+    print(f"  {service.replace('_', ' ').title()}: {rate:.5f}")
+    if rate > 0:
+        total_daily = rate * config.population_size
+        capacity = config.service_capacity.get(service, 0)
+        margin = capacity - total_daily
+        print(f"    → Daily total: {total_daily:.2f} | Capacity: {capacity:.2f} | Margin: {margin:.2f}")
 
 print(f"\nEvent Probabilities:")
 for event, prob in config.event_probabilities.items():
@@ -35,4 +44,3 @@ for event, prob in config.event_probabilities.items():
 
 print("\n" + "=" * 50)
 print("✅ AEON Core Systems Operational!")
-print("\n📚 Ready for full simulation")

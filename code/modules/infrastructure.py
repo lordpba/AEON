@@ -230,12 +230,3 @@ class InfrastructureManagement:
             if component_key in self.maintenance_queue:
                 self.maintenance_queue.remove(component_key)
             return True
-            system._update_status()
-            
-            logger.warning(f"EMERGENCY REPAIR: {system.name} restored to {system.health:.1f}%")
-            
-            if component_key in self.maintenance_queue:
-                self.maintenance_queue.remove(component_key)
-            
->>>>>>> 334d9b9 (Implement municipal governance, infrastructure management, public services, and simulation modules):code/modules/infrastructure.py
-            return True

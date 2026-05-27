@@ -4,11 +4,12 @@ Monitors citizen satisfaction, quality of life, and public sentiment
 from typing import Dict, List, Any
 import random
 import threading
+import time
 from loguru import logger
 
 class CitizenWellbeing:
     def __init__(self):
-        self.lock = threading.Lock()
+        self.lock = threading.RLock()
         self.wellbeing_data = {}  # Dictionary to store wellbeing metrics
         self.satisfaction_scores = {}  # Overall satisfaction per citizen
         self.public_sentiment = 0.0  # Average community sentiment (-100 to +100)
@@ -19,6 +20,7 @@ class CitizenWellbeing:
             self.update_wellbeing_metrics()
             self.analyze_satisfaction_trends()
             self.identify_issues()
+            time.sleep(5)
 
     def update_wellbeing_metrics(self):
         """Update wellbeing metrics for all citizens."""

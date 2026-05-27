@@ -19,6 +19,11 @@ class PublicServicesManagement:
         # Lock for thread-safe access
         self.lock = Lock()
 
+    def get_status(self) -> dict:
+        """Get the current status of all services."""
+        with self.lock:
+            return self.services.copy()
+
     def monitor_services(self):
         """Continuously monitor the available services."""
         while True:
@@ -62,7 +67,7 @@ class PublicServicesManagement:
 
     def run(self):
         """Start the service monitoring thread."""
-        monitoring_thread = Thread(target=self.monitor_services)
+        monitoring_thread = Thread(target=self.monitor_services, daemon=True)
         monitoring_thread.start()
 
 

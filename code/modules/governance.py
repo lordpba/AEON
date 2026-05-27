@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 import random
 import threading
+import time
 from loguru import logger
 
 @dataclass
@@ -45,6 +46,7 @@ class MunicipalGovernance:
             self.process_proposals()
             self.update_policies()
             self.generate_random_proposal()  # Simulate citizen proposals
+            time.sleep(5)
 
     def create_proposal(self, title: str, description: str, proposer: str = "Citizen") -> str:
         """Create a new governance proposal."""
