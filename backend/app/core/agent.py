@@ -16,7 +16,7 @@ class AgentResponse(BaseModel):
     confidence: float
 
 class AeonAgent:
-    def __init__(self, name: str, role: str, model: str = "llama3"):
+    def __init__(self, name: str, role: str, model: str = "gemma4:e4b"):
         self.name = name
         self.role = role
         self.model = model

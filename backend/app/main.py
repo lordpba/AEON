@@ -1,6 +1,8 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import logging
+import os
 from typing import List, Dict, Any
 
 from app.core.agent import AeonAgent
@@ -14,11 +16,20 @@ app = FastAPI(
     version="1.0.0"
 )
 
+# Allow React Frontend (Vite runs on 5173 by default)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # Initialize the AEON Core Agent
 core_agent = AeonAgent(
     name="AEON Core", 
     role="Top-level executive coordinator. Resolves conflicts between lower-tier agents according to Emergency Priorities.",
-    model="llama3"  # Ensure llama3 is pulled in Ollama locally
+    model="gemma4:e4b"  # Ensure gemma4:e4b is pulled in Ollama locally
 )
 
 class SituationRequest(BaseModel):
@@ -28,6 +39,25 @@ class SituationRequest(BaseModel):
 @app.get("/")
 def read_root():
     return {"status": "AEON MAS Backend is running (Offline Mode - Ollama)."}
+
+@app.get("/api/v1/wiki")
+def list_wiki_pages():
+    """Returns a list of available markdown pages in the LLMWiki."""
+    try:
+        files = os.listdir(core_agent.wiki_dir)
+        pages = [f.replace(".md", "") for f in files if f.endswith(".md")]
+        return {"pages": pages}
+    except Exception as e:
+        logger.error(f"Error reading wiki directory: {e}")
+        return {"pages": []}
+
+@app.get("/api/v1/wiki/{page_name}")
+def get_wiki_page(page_name: str):
+    """Returns the markdown content of a specific wiki page."""
+    content = core_agent.read_wiki(page_name)
+    if "not found" in content:
+        raise HTTPException(status_code=404, detail="Wiki page not found")
+    return {"content": content}
 
 @app.post("/api/v1/decide")
 def make_agent_decision(request: SituationRequest):
