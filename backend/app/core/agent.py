@@ -45,40 +45,77 @@ class AeonAgent:
             return f"Wiki page {page_name} not found."
 
     def make_decision(self, situation: str, context_pages: List[str]) -> Optional[Dict[str, Any]]:
-        """Queries Ollama to make a decision based on the situation and wiki context."""
+        """
+        Queries the local/remote Ollama model to produce a structured, auditable decision.
+        Optimized for strong models like Qwen3.5, DeepSeek-R1, Llama4, etc.
+        """
         context_text = ""
         for page in context_pages:
             content = self.read_wiki(page)
             context_text += f"\n--- {page}.md ---\n{content}\n"
-            
-        prompt = f"""
-You are the {self.name} Agent for the AEON Space Colony. Your role is: {self.role}.
-You must make a critical decision based on the following situation and Standard Operating Procedures (SOPs).
 
-SITUATION:
+        # Strong prompt optimized for Qwen3.5 / high-capability models
+        prompt = f"""You are the {self.name} for the AEON Mars Colony.
+
+ROLE: {self.role}
+
+You must make a high-stakes decision under strict operational constraints. Your reasoning will be reviewed by human experts and must be transparent, logical, and directly grounded in the provided Standard Operating Procedures.
+
+=== CURRENT SITUATION ===
 {situation}
 
-RELEVANT WIKI PAGES (SOPs):
+=== RELEVANT STANDARD OPERATING PROCEDURES (LLMWiki) ===
 {context_text}
 
-Respond ONLY with a valid JSON object matching this schema:
+=== INSTRUCTIONS ===
+1. Read the Emergency Priorities document first — it is the ultimate decision hierarchy.
+2. Analyze the situation using ONLY the information in the provided wiki pages.
+3. Produce a single, clear executive decision.
+4. Your reasoning must be explicit, step-by-step, and cite specific sections from the wiki pages.
+5. Explicitly state what alternatives you considered and why you rejected them.
+6. Be conservative when human life is at risk.
+
+Respond **ONLY** with a valid JSON object in this exact schema (no markdown, no extra text):
+
 {{
-    "decision": "Action to take",
-    "reasoning_chain": "Step-by-step logic",
-    "cited_wiki_pages": ["Page1", "Page2"],
-    "rejected_alternatives": "What you considered but didn't do",
-    "confidence": 0.95
+    "decision": "Clear, actionable decision in one sentence",
+    "reasoning_chain": "Detailed step-by-step logical reasoning (3-8 sentences). Reference specific principles from the wiki pages.",
+    "cited_wiki_pages": ["ExactPageName1", "ExactPageName2"],
+    "rejected_alternatives": "What other options you considered and why they were inferior or violated priorities.",
+    "confidence": 0.0
 }}
-"""
+
+The "confidence" field must be a number between 0.0 and 1.0 reflecting how well the decision is supported by the SOPs."""
+
         try:
             response = ollama.chat(
                 model=self.model,
-                messages=[{'role': 'user', 'content': prompt}],
-                format='json'
+                messages=[{"role": "user", "content": prompt}],
+                format="json",
+                options={
+                    "temperature": 0.2,   # Low temperature for more deterministic, serious decisions
+                    "top_p": 0.9,
+                }
             )
-            # Parse the JSON response
-            result = json.loads(response['message']['content'])
+
+            raw_content = response["message"]["content"]
+            result = json.loads(raw_content)
             return result
+
+        except json.JSONDecodeError:
+            logger.warning("Model did not return valid JSON. Attempting extraction...")
+            # Fallback: try to extract JSON from the response
+            try:
+                import re
+                match = re.search(r"\{.*\}", raw_content, re.DOTALL)
+                if match:
+                    result = json.loads(match.group(0))
+                    return result
+            except Exception:
+                pass
+            logger.error(f"Failed to parse decision from model. Raw output:\n{raw_content}")
+            return None
+
         except Exception as e:
-            logger.error(f"Error in {self.name} decision making: {e}")
+            logger.error(f"Error calling Ollama model '{self.model}': {e}")
             return None
