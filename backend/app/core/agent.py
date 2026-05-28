@@ -1,12 +1,14 @@
-import os
 import json
 import logging
+from pathlib import Path
 from typing import Dict, Any, List, Optional
-from pydantic import BaseModel
+
 import ollama
+from pydantic import BaseModel
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
 
 class AgentResponse(BaseModel):
     decision: str
@@ -15,19 +17,21 @@ class AgentResponse(BaseModel):
     rejected_alternatives: str
     confidence: float
 
+
 class AeonAgent:
-    def __init__(self, name: str, role: str, model: str = "gemma4:e4b"):
+    def __init__(self, name: str, role: str, model: str = "gemma3:4b"):
         self.name = name
         self.role = role
         self.model = model
-        self.wiki_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))), "llmwiki", "wiki")
+
+        # Robust path resolution: from backend/app/core/agent.py → repo root / llmwiki/wiki
+        self.wiki_dir = Path(__file__).resolve().parents[4] / "llmwiki" / "wiki"
         
     def read_wiki(self, page_name: str) -> str:
         """Reads a markdown file from the LLMWiki."""
-        file_path = os.path.join(self.wiki_dir, f"{page_name}.md")
+        file_path = self.wiki_dir / f"{page_name}.md"
         try:
-            with open(file_path, 'r', encoding='utf-8') as f:
-                return f.read()
+            return file_path.read_text(encoding="utf-8")
         except FileNotFoundError:
             return f"Wiki page {page_name} not found."
 

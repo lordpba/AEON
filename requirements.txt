@@ -1,23 +1,21 @@
-# Core dependencies
-python-dotenv>=1.0.0
-pydantic>=2.0.0
-typing-extensions>=4.8.0
+# AEON - Core dependencies for Phase 1 (solid foundation)
 
-# API backend
+# Web framework
 fastapi>=0.112.0
-uvicorn>=0.30.0
-pydantic-settings>=2.4.0
-websockets>=12.0
+uvicorn[standard]>=0.30.0
 
-# AI & MAS Framework
+# AI / Local inference
 ollama>=0.2.0
 
-# Utilities
-pyyaml>=6.0
-loguru>=0.7.0
-python-dateutil>=2.8.0
+# Data validation & settings
+pydantic>=2.0.0
+pydantic-settings>=2.4.0
+python-dotenv>=1.0.0
 
-# Testing & Dev
+# Utilities
+loguru>=0.7.0
+
+# Frontend is managed separately with npm
+# Testing & dev tools (optional but recommended)
 pytest>=7.4.0
-pytest-asyncio>=0.21.0
 black>=23.9.0

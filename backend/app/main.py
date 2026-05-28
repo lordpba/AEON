@@ -12,8 +12,8 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI(
     title="AEON: Autonomous Extraterrestrial Operations Network",
-    description="PhD-level MAS Framework for Space Colony Governance using Ollama.",
-    version="1.0.0"
+    description="Research platform for AI governance of Mars colonies under communication delay and human incapacitation. Local inference only.",
+    version="0.1.0"
 )
 
 # Allow React Frontend (Vite runs on 5173 by default)
@@ -27,9 +27,9 @@ app.add_middleware(
 
 # Initialize the AEON Core Agent
 core_agent = AeonAgent(
-    name="AEON Core", 
-    role="Top-level executive coordinator. Resolves conflicts between lower-tier agents according to Emergency Priorities.",
-    model="gemma4:e4b"  # Ensure gemma4:e4b is pulled in Ollama locally
+    name="AEON Core",
+    role="Top-level executive coordinator. Resolves conflicts between systems according to Emergency Priorities when communication with Earth is delayed or impossible.",
+    model="gemma3:4b",  # Change to any model you have pulled locally (gemma3:4b, llama3.2, qwen2.5:7b, etc.)
 )
 
 class SituationRequest(BaseModel):
