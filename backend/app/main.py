@@ -26,10 +26,12 @@ app.add_middleware(
 )
 
 # Initialize the AEON Core Agent
+# Model and Ollama host can be controlled via environment variables:
+#   $env:OLLAMA_MODEL = "qwen2.5:14b"
+#   $env:OLLAMA_HOST  = "http://100.68.217.72:11434"
 core_agent = AeonAgent(
     name="AEON Core",
     role="Top-level executive coordinator. Resolves conflicts between systems according to Emergency Priorities when communication with Earth is delayed or impossible.",
-    model="gemma3:4b",  # Change to any model you have pulled locally (gemma3:4b, llama3.2, qwen2.5:7b, etc.)
 )
 
 class SituationRequest(BaseModel):

@@ -1,5 +1,6 @@
 import json
 import logging
+import os
 from pathlib import Path
 from typing import Dict, Any, List, Optional
 
@@ -19,10 +20,18 @@ class AgentResponse(BaseModel):
 
 
 class AeonAgent:
-    def __init__(self, name: str, role: str, model: str = "gemma3:4b"):
+    def __init__(self, name: str, role: str, model: str | None = None):
         self.name = name
         self.role = role
-        self.model = model
+
+        # Support remote Ollama (e.g. DGX or another machine)
+        # Set OLLAMA_HOST=http://100.68.217.72:11434 before starting the backend
+        ollama_host = os.getenv("OLLAMA_HOST")
+        if ollama_host:
+            os.environ["OLLAMA_HOST"] = ollama_host  # ollama client reads this
+
+        # Model can come from env var or parameter (useful when switching between laptop and DGX)
+        self.model = model or os.getenv("OLLAMA_MODEL", "gemma3:4b")
 
         # Robust path resolution: from backend/app/core/agent.py → repo root / llmwiki/wiki
         self.wiki_dir = Path(__file__).resolve().parents[4] / "llmwiki" / "wiki"
