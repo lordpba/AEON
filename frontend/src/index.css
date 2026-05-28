@@ -238,6 +238,24 @@ h1, h2, h3 {
   border-left: 3px solid var(--accent-blue);
 }
 
+.wiki-groups {
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.wiki-group-header {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-tertiary);
+  margin: 1rem 0 0.4rem 0.25rem;
+  font-weight: 600;
+}
+
+.wiki-group:first-child .wiki-group-header {
+  margin-top: 0.25rem;
+}
+
 .wiki-content {
   flex-grow: 1;
   padding: 2rem;
@@ -281,6 +299,68 @@ h1, h2, h3 {
 
 .wiki-content li {
   margin-bottom: 0.5rem;
+}
+
+/* Decision Request Panel */
+.decision-panel {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.5rem;
+}
+
+.decision-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.decision-panel-header h3 {
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.decision-button {
+  background-color: var(--accent-blue);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.decision-button:hover:not(:disabled) {
+  background-color: #3a8be0;
+  transform: translateY(-1px);
+}
+
+.decision-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.decision-inputs textarea {
+  width: 100%;
+  background-color: var(--bg-core);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  padding: 0.75rem;
+  resize: vertical;
+}
+
+.decision-inputs textarea:focus {
+  outline: none;
+  border-color: var(--accent-blue);
 }
 
 /* Animations */

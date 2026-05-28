@@ -19,14 +19,14 @@ const MetricCard = ({ title, value, unit, status = "nominal", icon }) => {
   );
 };
 
-// Agent XAI Log Component
-const AgentLog = () => {
-  const [log, setLog] = useState({
-    decision: "Maintain BAU Equilibrium",
-    reasoning_chain: "Power reserves at 98%. O2 levels nominal. Proceeding with standard Sabatier production.",
-    cited_wiki_pages: ["ECLSS_BAU", "Power_Grid_Management"],
-    confidence: 0.99
-  });
+// Agent XAI Log Component - Now supports real decisions
+const AgentLog = ({ decisionData }) => {
+  const log = decisionData || {
+    decision: "Awaiting first decision request...",
+    reasoning_chain: "No decision has been requested yet. Use the panel below to query AEON Core.",
+    cited_wiki_pages: [],
+    confidence: null
+  };
 
   return (
     <div className="agent-log">
@@ -39,20 +39,27 @@ const AgentLog = () => {
         AEON Core (local Ollama • structured reasoning)
       </div>
       <div className="agent-log-content mono">
+        {log.confidence !== null && (
+          <div style={{ marginBottom: '0.75rem', fontSize: '0.7rem', color: 'var(--text-tertiary)' }}>
+            CONFIDENCE: <span className="json-number">{log.confidence}</span>
+          </div>
+        )}
         <div><span className="json-key">"decision"</span>: <span className="json-string">"{log.decision}"</span>,</div>
-        <div><span className="json-key">"reasoning"</span>: <span className="json-string">"{log.reasoning_chain}"</span>,</div>
-        <div><span className="json-key">"sources"</span>: <span className="json-string">{JSON.stringify(log.cited_wiki_pages)}</span>,</div>
-        <div><span className="json-key">"confidence"</span>: <span className="json-number">{log.confidence}</span></div>
+        <div style={{ marginTop: '0.5rem' }}><span className="json-key">"reasoning"</span>: <span className="json-string">"{log.reasoning_chain}"</span>,</div>
+        {log.cited_wiki_pages?.length > 0 && (
+          <div style={{ marginTop: '0.5rem' }}><span className="json-key">"sources"</span>: <span className="json-string">{JSON.stringify(log.cited_wiki_pages)}</span>,</div>
+        )}
       </div>
     </div>
   );
 };
 
-// Wiki Terminal (Knowledge Base)
+// Wiki Terminal (Knowledge Base) - Supports new modular structure
 const WikiTerminal = () => {
   const [pages, setPages] = useState([]);
+  const [groupedPages, setGroupedPages] = useState({});
   const [activePage, setActivePage] = useState(null);
-  const [content, setContent] = useState("Select a page from the index to view Standard Operating Procedures.");
+  const [content, setContent] = useState("Select a page from the LLMWiki to view Standard Operating Procedures.");
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -61,6 +68,16 @@ const WikiTerminal = () => {
       .then(data => {
         if (data.pages) {
           setPages(data.pages);
+          // Group pages by top-level category
+          const groups = {};
+          data.pages.forEach(page => {
+            const parts = page.split('/');
+            const category = parts.length > 1 ? parts[0] : 'other';
+            
+            if (!groups[category]) groups[category] = [];
+            groups[category].push(page);
+          });
+          setGroupedPages(groups);
           setError(false);
         }
       })
@@ -71,13 +88,29 @@ const WikiTerminal = () => {
       });
   }, []);
 
-  const loadPage = (pageName) => {
-    setActivePage(pageName);
+  const loadPage = (pagePath) => {
+    setActivePage(pagePath);
     setContent("Loading...");
-    fetch(`http://localhost:8000/api/v1/wiki/${pageName}`)
+    // Encode the path for the URL
+    const encodedPath = encodeURIComponent(pagePath);
+    fetch(`http://localhost:8000/api/v1/wiki/${encodedPath}`)
       .then(res => res.json())
       .then(data => setContent(data.content))
       .catch(err => setContent("Error loading page content."));
+  };
+
+  const getCategoryLabel = (category) => {
+    const labels = {
+      'principles': 'Principles',
+      'procedures': 'Procedures',
+      'systems': 'Systems',
+      'crew': 'Crew',
+      'resources': 'Resources',
+      'monitoring': 'Monitoring',
+      'interfaces': 'Interfaces',
+      'other': 'Other'
+    };
+    return labels[category] || category;
   };
 
   return (
@@ -87,17 +120,32 @@ const WikiTerminal = () => {
         {error ? (
           <div style={{ color: 'var(--status-critical)', fontSize: '0.875rem' }}>Backend Offline</div>
         ) : (
-          <ul className="wiki-list">
-            {pages.map(page => (
-              <li 
-                key={page} 
-                className={activePage === page ? 'active' : ''} 
-                onClick={() => loadPage(page)}
-              >
-                📄 {page}
-              </li>
+          <div className="wiki-groups">
+            {Object.keys(groupedPages).sort().map(category => (
+              <div key={category} className="wiki-group">
+                <div className="wiki-group-header">{getCategoryLabel(category)}</div>
+                <ul className="wiki-list">
+                  {groupedPages[category].map(page => {
+                    // Create a nice display name
+                    const displayName = page.includes('/') 
+                      ? page.split('/').slice(1).join(' / ') 
+                      : page;
+                    
+                    return (
+                      <li 
+                        key={page} 
+                        className={activePage === page ? 'active' : ''} 
+                        onClick={() => loadPage(page)}
+                        title={page}
+                      >
+                        📄 {displayName}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
             ))}
-          </ul>
+          </div>
         )}
       </div>
       <div className="wiki-content">
@@ -116,6 +164,22 @@ function App() {
     sabatier: 1120
   });
 
+  // Real decision state (Opzione B)
+  const [latestDecision, setLatestDecision] = useState(null);
+  const [isRequestingDecision, setIsRequestingDecision] = useState(false);
+  const [decisionError, setDecisionError] = useState(null);
+
+  // Decision request form state
+  const [situation, setSituation] = useState(
+    "Medical team reports a suspected pathogen. Phase 2 quarantine requires isolating several ventilation sectors, significantly increasing ECLSS power demand. The ISRU Sabatier reactors are currently operating at full capacity."
+  );
+  const [selectedPages, setSelectedPages] = useState([
+    "principles/Emergency_Priorities",
+    "procedures/contingency/Medical_Quarantine_Procedure",
+    "procedures/bau/ECLSS_BAU",
+    "procedures/contingency/ISRU_Sabatier_Protocol"
+  ]);
+
   // Simulate BAU fluctuations
   useEffect(() => {
     const interval = setInterval(() => {
@@ -129,6 +193,43 @@ function App() {
     return () => clearInterval(interval);
   }, []);
 
+  // Handle requesting a real decision from AEON Core
+  const requestDecision = async () => {
+    if (!situation.trim()) {
+      setDecisionError("Please enter a situation description.");
+      return;
+    }
+
+    setIsRequestingDecision(true);
+    setDecisionError(null);
+
+    try {
+      const response = await fetch('http://localhost:8000/api/v1/decide', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          situation: situation.trim(),
+          context_pages: selectedPages
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Backend error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const decision = data.response || data;
+
+      setLatestDecision(decision);
+
+    } catch (err) {
+      console.error(err);
+      setDecisionError("Failed to get decision. Is the backend running?");
+    } finally {
+      setIsRequestingDecision(false);
+    }
+  };
+
   return (
     <div className="dashboard-layout">
       
@@ -138,7 +239,7 @@ function App() {
           <h2 style={{ letterSpacing: '0.2em', textTransform: 'uppercase', fontSize: '1.2rem', marginBottom: '0.5rem' }}>AEON MAS</h2>
           <p style={{ color: 'var(--text-tertiary)', fontSize: '0.875rem' }}>Autonomous Extraterrestrial Operations Network</p>
         </div>
-        <AgentLog />
+        <AgentLog decisionData={latestDecision} />
       </aside>
 
       {/* Main Mission Control */}
@@ -180,6 +281,39 @@ function App() {
             status="nominal"
             icon="🚀"
           />
+        </div>
+
+        {/* Decision Request Panel (Opzione B) */}
+        <div className="decision-panel">
+          <div className="decision-panel-header">
+            <h3>Request AEON Core Decision</h3>
+            <button 
+              onClick={requestDecision} 
+              disabled={isRequestingDecision}
+              className="decision-button"
+            >
+              {isRequestingDecision ? "Querying AEON Core..." : "Ask AEON Core"}
+            </button>
+          </div>
+
+          <div className="decision-inputs">
+            <textarea
+              value={situation}
+              onChange={(e) => setSituation(e.target.value)}
+              placeholder="Describe the situation..."
+              rows={3}
+            />
+
+            <div style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)', marginTop: '0.5rem' }}>
+              Context pages used: <span className="mono" style={{ color: 'var(--accent-blue)' }}>{selectedPages.join(', ')}</span>
+            </div>
+
+            {decisionError && (
+              <div style={{ color: 'var(--status-critical)', fontSize: '0.875rem', marginTop: '0.5rem' }}>
+                {decisionError}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Knowledge Base Viewer */}

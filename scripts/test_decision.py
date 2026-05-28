@@ -65,7 +65,7 @@ def main():
     decision = agent.make_decision(situation=situation, context_pages=context_pages)
 
     if decision:
-        print("✅ DECISION RECEIVED\n")
+        print("[SUCCESS] DECISION RECEIVED\n")
         print("=" * 70)
         print(f"DECISION: {decision.get('decision')}")
         print("=" * 70)
@@ -75,7 +75,7 @@ def main():
         print(f"\nCONFIDENCE: {decision.get('confidence')}")
         print("=" * 70)
     else:
-        print("❌ Failed to get a valid decision from the model.")
+        print("[FAIL] Failed to get a valid decision from the model.")
         print("Check that Ollama is reachable and the model is loaded.")
 
 
