@@ -44,10 +44,15 @@ def read_root():
 
 @app.get("/api/v1/wiki")
 def list_wiki_pages():
-    """Returns a list of available markdown pages in the LLMWiki."""
+    """Returns a list of available markdown pages in the LLMWiki (recursive, supports modular structure)."""
     try:
-        files = os.listdir(core_agent.wiki_dir)
-        pages = [f.replace(".md", "") for f in files if f.endswith(".md")]
+        pages = []
+        for path in core_agent.wiki_dir.rglob("*.md"):
+            if path.name != "README.md" and path.name != "00_INDEX.md":
+                # Return relative path without extension for clarity (e.g. principles/Emergency_Priorities)
+                relative = path.relative_to(core_agent.wiki_dir)
+                pages.append(str(relative.with_suffix("")))
+        pages.sort()
         return {"pages": pages}
     except Exception as e:
         logger.error(f"Error reading wiki directory: {e}")

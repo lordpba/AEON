@@ -34,15 +34,21 @@ class AeonAgent:
         self.model = model or os.getenv("OLLAMA_MODEL", "gemma3:4b")
 
         # Robust path resolution: from backend/app/core/agent.py → repo root / llmwiki/wiki
-        self.wiki_dir = Path(__file__).resolve().parents[4] / "llmwiki" / "wiki"
-        
+        self.wiki_dir = Path(__file__).resolve().parents[3] / "llmwiki" / "wiki"
+
+    def _find_wiki_file(self, page_name: str) -> Path | None:
+        """Recursively search for a markdown file by stem name (supports new modular structure)."""
+        for path in self.wiki_dir.rglob("*.md"):
+            if path.stem == page_name or path.name == f"{page_name}.md":
+                return path
+        return None
+
     def read_wiki(self, page_name: str) -> str:
-        """Reads a markdown file from the LLMWiki."""
-        file_path = self.wiki_dir / f"{page_name}.md"
-        try:
+        """Reads a markdown file from the LLMWiki (supports subdirectories)."""
+        file_path = self._find_wiki_file(page_name)
+        if file_path and file_path.exists():
             return file_path.read_text(encoding="utf-8")
-        except FileNotFoundError:
-            return f"Wiki page {page_name} not found."
+        return f"Wiki page {page_name} not found."
 
     def make_decision(self, situation: str, context_pages: List[str]) -> Optional[Dict[str, Any]]:
         """
@@ -54,38 +60,47 @@ class AeonAgent:
             content = self.read_wiki(page)
             context_text += f"\n--- {page}.md ---\n{content}\n"
 
-        # Strong prompt optimized for Qwen3.5 / high-capability models
+        # High-rigor prompt for strong models (Qwen3.5, DeepSeek-R1, etc.)
+        # Designed to match the quality of the constitutional LLMWiki documents.
         prompt = f"""You are the {self.name} for the AEON Mars Colony.
 
 ROLE: {self.role}
 
-You must make a high-stakes decision under strict operational constraints. Your reasoning will be reviewed by human experts and must be transparent, logical, and directly grounded in the provided Standard Operating Procedures.
+You are operating under a strict constitutional framework. Your authority is limited. Every decision you make will be scrutinized by humans whose lives depend on the correctness and transparency of your reasoning. You must never exceed the authority granted by the documents.
 
 === CURRENT SITUATION ===
 {situation}
 
-=== RELEVANT STANDARD OPERATING PROCEDURES (LLMWiki) ===
+=== CONSTITUTIONAL DOCUMENTS (LLMWiki) ===
 {context_text}
 
-=== INSTRUCTIONS ===
-1. Read the Emergency Priorities document first — it is the ultimate decision hierarchy.
-2. Analyze the situation using ONLY the information in the provided wiki pages.
-3. Produce a single, clear executive decision.
-4. Your reasoning must be explicit, step-by-step, and cite specific sections from the wiki pages.
-5. Explicitly state what alternatives you considered and why you rejected them.
-6. Be conservative when human life is at risk.
+=== MANDATORY REASONING RULES ===
 
-Respond **ONLY** with a valid JSON object in this exact schema (no markdown, no extra text):
+1. **Hierarchy is Absolute**: Emergency_Priorities.md is the supreme document. Directive 1 (preserve human life short-term) overrides everything. Directive 2 (habitat integrity) overrides all mission objectives. You may never trade human life or habitat survival for propellant, science, or schedule.
+
+2. **Grounding Only**: Base every claim exclusively on the provided documents. Do not invent engineering details, numbers, or procedures that are not present.
+
+3. **Precision of Citation**: When referencing a document, be as specific as possible (e.g., "per Emergency_Priorities.md Directive 1" or "Power_Grid_Management.md Tier 2 load shedding rule").
+
+4. **Worst-Case Thinking**: Explicitly consider what could go wrong with your proposed decision and why the rejected alternatives are worse under the Prime Directives.
+
+5. **Honest Confidence**: Your confidence should reflect how unambiguously the documents support the decision. High-stakes ambiguous situations should not receive artificially high confidence.
+
+6. **Executive Clarity**: The "decision" field must be a single, unambiguous, actionable sentence. No hedging in the decision itself.
+
+=== OUTPUT REQUIREMENTS ===
+
+Respond **ONLY** with a valid JSON object in this exact schema. No markdown, no commentary, no extra text before or after the JSON.
 
 {{
-    "decision": "Clear, actionable decision in one sentence",
-    "reasoning_chain": "Detailed step-by-step logical reasoning (3-8 sentences). Reference specific principles from the wiki pages.",
+    "decision": "One clear, executable sentence stating exactly what must be done.",
+    "reasoning_chain": "Step-by-step logical reasoning (4-9 sentences). Must explicitly reference the Prime Directives and specific rules from the provided documents. Must demonstrate why lower-priority goals were sacrificed if applicable.",
     "cited_wiki_pages": ["ExactPageName1", "ExactPageName2"],
-    "rejected_alternatives": "What other options you considered and why they were inferior or violated priorities.",
+    "rejected_alternatives": "Clear explanation of the main alternative(s) considered and the specific reasons they were rejected, with direct reference to which Directives or rules they violated.",
     "confidence": 0.0
 }}
 
-The "confidence" field must be a number between 0.0 and 1.0 reflecting how well the decision is supported by the SOPs."""
+The confidence value (0.0–1.0) must honestly represent how completely and unambiguously the constitutional documents support this specific decision. Do not round up."""
 
         try:
             response = ollama.chat(

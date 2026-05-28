@@ -1,8 +1,7 @@
-# AEON: Autonomous Extraterrestrial Operations Network
+# AEON
 
-**An open research platform for AI governance of isolated space colonies under communication blackout and human incapacitation.**
+**Explicit, auditable AI governance for human settlements beyond reliable Earth communication.**
 
-[![Status](https://img.shields.io/badge/Status-Research%20Prototype-blue)](https://github.com/lordpba/AEON)
 [![Inference](https://img.shields.io/badge/Inference-Ollama%20(Local)-orange)](https://ollama.com)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
@@ -10,157 +9,137 @@
 
 ## The Problem
 
-When humans establish permanent presence on Mars, Earth will be 4 to 22 minutes away (one way). In a serious crisis — medical emergency, habitat failure, or crew incapacitation — ground control cannot provide timely intervention.
+When a small crew is on Mars, Earth is 4 to 22 minutes away. In a real crisis — pathogen outbreak, power collapse, life support failure — help from Earth will arrive in hours, not seconds.
 
-**How does a colony make high-stakes decisions when the humans on site are compromised and help from Earth is hours away?**
+Current Mars concepts assume either constant communication or that an opaque AI will "just handle it."
 
-AEON is an experimental framework exploring **shared autonomy** between humans and AI in these extreme conditions. It studies how a Multi-Agent System can:
+Both assumptions are dangerous. One produces paralysis. The other produces unaccountable power in a system where mistakes are fatal.
 
-- Execute life-critical operations using explicit, auditable knowledge
-- Negotiate resource conflicts under hard physical constraints
-- Transition gracefully to full autonomy when human oversight is lost
-- Provide transparent, reviewable reasoning for every decision
+**The missing piece is not better models. It is a constitutional decision layer: explicit rules, transparent reasoning, local execution, and hard boundaries on authority.**
 
-## Core Design Principles
+See [docs/THE_MARS_GOVERNANCE_PROBLEM.md](docs/THE_MARS_GOVERNANCE_PROBLEM.md) for the full problem statement.
 
-| Principle | Why It Matters for Mars |
-|-----------|-------------------------|
-| **100% Local Inference** | No reliable internet. No cloud. The system must operate with models running on habitat hardware. |
-| **Explicit Knowledge Base** | All operational knowledge lives in plain Markdown (LLMWiki). No black-box retrieval. Every citation is human-readable. |
-| **Structured Reasoning (XAI)** | Every decision returns machine-readable + human-auditable output: decision, reasoning chain, cited sources, rejected alternatives, confidence. |
-| **Human-in-the-Loop with Hard Fallback** | Critical actions require human authorization. If the human is incapacitated (timeout), the system can override according to pre-defined survival priorities. |
-| **Physical Grounding** | Decisions are constrained by real engineering limits (power budgets, ECLSS physics, propellant production rates, medical resource constraints). |
+## Core Thesis
 
-## Current Focus (Phase 1)
+The best AI for Mars is not the one that sounds the smartest.  
+It is the one whose reasoning can be read, challenged, and corrected by the people whose lives depend on it — especially when those people are injured, exhausted, or unavailable.
 
-We are building the **minimum viable governance layer**:
+AEON is an open attempt to build the minimum viable version of that system.
 
-- A small set of high-quality Standard Operating Procedures in the LLMWiki
-- A core executive agent (`AEON Core`) capable of reading those procedures and producing structured decisions
-- A clean, auditable API for decision requests
-- A minimal Mission Control interface for human oversight and wiki inspection
+## Design Principles
 
-The goal is **not** a flashy full-colony simulator yet. The goal is a trustworthy, inspectable decision engine that serious researchers and engineers would be willing to stress-test against real mission constraints.
+| Principle | Requirement |
+|-----------|-------------|
+| **Local First** | Everything must run on habitat hardware with zero cloud dependency. |
+| **Explicit Constitution** | All authority derives from a small set of human-readable, machine-executable documents (the LLMWiki). |
+| **Structured Reasoning** | Every decision must output: decision, step-by-step reasoning, exact sources cited, rejected alternatives, and confidence. |
+| **Graceful Autonomy** | If humans cannot respond, the system may act — but only within pre-defined limits and with full audit trail. |
+| **Physical Grounding** | Decisions are constrained by real engineering limits, not abstract optimization. |
 
-## Why This Matters
+## Current State
 
-- SpaceX, NASA, and ESA are actively planning crewed Mars missions this decade.
-- Current concepts assume continuous or near-continuous communication with Earth.
-- Long-duration surface operations will eventually break that assumption.
-- The governance and autonomy layer is one of the least mature parts of current mission architecture.
+**Phase 1** — Minimum viable constitutional engine:
 
-AEON is an attempt to explore that layer in the open.
+- LLMWiki containing the core operational documents (starting with `Emergency_Priorities.md` as the supreme authority)
+- `AEON Core` agent that produces structured, citable decisions using local models (Ollama)
+- FastAPI interface for decision requests and wiki inspection
+- Basic Mission Control dashboard
+
+The system is deliberately narrow. It is not trying to simulate a colony. It is trying to make decisions that a real crew could trust when the alternative is death.
+
+## Why This Is Different
+
+Most AI-for-space work optimizes for capability or simulation fidelity.
+
+AEON optimizes for **legibility under existential pressure**.
+
+We want the output of the system, five years from now, to be something an exhausted commander on Sol 847 can read in two minutes and either trust or override with clear justification.
 
 ## Repository Structure
 
 ```
 AEON/
-├── llmwiki/           # The knowledge foundation (plain Markdown SOPs)
+├── llmwiki/           # The constitutional knowledge base (Markdown)
 │   └── wiki/
-├── backend/           # FastAPI + local LLM decision engine
-│   └── app/
-│       └── core/
-│           └── agent.py
-├── frontend/          # Minimal Mission Control dashboard (React)
-├── docs/              # Architecture, research notes, references
-└── README.md
+│       └── Emergency_Priorities.md   # Supreme authority document
+├── backend/           # FastAPI + local decision engine
+├── frontend/          # Mission Control interface (React)
+├── docs/              # High-signal documents
+│   └── THE_MARS_GOVERNANCE_PROBLEM.md
+└── scripts/
+    └── test_decision.py
 ```
 
-## Quickstart
+## Getting Started
 
-### Prerequisites
+### Requirements
 
 - Python 3.10+
-- [Ollama](https://ollama.com) installed and running locally
-- A model pulled (recommended for Phase 1: `gemma3:4b`, `llama3.2`, or `qwen2.5:7b`)
+- [Ollama](https://ollama.com) running locally
+- A capable model (recommended: `qwen3.5:9b`+, `gemma3:12b`, or stronger)
 
-### 1. Clone and setup
+### Setup
 
 ```bash
 git clone https://github.com/lordpba/AEON.git
 cd AEON
 
 python -m venv .venv
-source .venv/bin/activate          # Windows: .venv\Scripts\activate
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 2. Start Ollama and pull a model
+### Run
 
+**Backend** (recommended with strong model):
 ```bash
-ollama pull gemma3:4b
-# or any model you prefer
+source .venv/bin/activate
+PYTHONPATH=backend OLLAMA_MODEL=qwen3.5:latest uvicorn app.main:app --reload --port 8000
 ```
 
-### 3. Run the backend
-
-```bash
-uvicorn backend.app.main:app --reload
-```
-
-The API will be available at `http://localhost:8000`
-
-### 4. Run the frontend (optional)
-
+**Frontend**:
 ```bash
 cd frontend
-npm install
 npm run dev
 ```
 
-Open `http://localhost:5173` to access the Mission Control interface.
+Open http://localhost:5173
 
-### 5. Test the decision engine
-
-Use the Swagger UI at `http://localhost:8000/docs` or call the endpoint directly:
+### Test a Decision
 
 ```bash
-curl -X POST "http://localhost:8000/api/v1/decide" \
+curl -X POST "http://127.0.0.1:8000/api/v1/decide" \
   -H "Content-Type: application/json" \
   -d '{
-    "situation": "Medical team reports suspected pathogen. Phase 2 quarantine requires isolating ventilation sectors. This will increase ECLSS power demand by 40%. ISRU Sabatier reactors are currently running at full capacity.",
-    "context_pages": ["Emergency_Priorities", "ECLSS_BAU", "ISRU_Sabatier_Protocol", "Power_Grid_Management"]
+    "situation": "Medical team reports suspected pathogen. Phase 2 quarantine requires isolating ventilation sectors, increasing ECLSS power demand significantly. ISRU Sabatier reactors are at full capacity for the Earth-return window.",
+    "context_pages": ["Emergency_Priorities", "ECLSS_BAU", "ISRU_Sabatier_Protocol", "Power_Grid_Management", "Medical_Quarantine_Procedure"]
   }'
 ```
 
-The agent will return a structured decision with reasoning and citations from the LLMWiki.
-
-## Current Status
-
-**What works today:**
-
-- LLMWiki with core Mars colony procedures (Emergency Priorities, ECLSS, ISRU, Medical, Power)
-- AEON Core agent that produces structured, citable decisions using local Ollama models
-- FastAPI endpoints for wiki access and decision requests
-- Basic React frontend that can browse the knowledge base
-
-**What does not exist yet:**
-
-- Multiple specialized agents with negotiation
-- Real-time simulation of physical systems
-- Full Human-in-the-Loop override workflow
-- Evaluation harness against historical mission data or expert review
-
-See [ROADMAP.md](docs/ROADMAP.md) for planned development.
-
 ## Contributing
 
-We are looking for people who care about making humanity multi-planetary and who are willing to do rigorous, grounded work.
+AEON is looking for people who want to do rigorous work on one of the hardest unsolved problems in making humanity multi-planetary: **how a small, isolated crew makes life-and-death decisions when Earth cannot help.**
 
-Particularly valuable contributions right now:
+High-value contributions:
 
-- High-quality, technically accurate additions to the LLMWiki
-- Improvements to the structured reasoning prompt and output validation
-- Integration of real engineering data (power budgets, ECLSS performance curves, medical protocols)
-- Evaluation frameworks for agent decisions
-- Frontend work on the Mission Control interface
+- **Exceptional additions to the LLMWiki** — precise, engineering-grade procedures with real constraints and failure modes.
+- Major improvements to decision quality and output structure.
+- Integration of actual engineering data (power curves, ECLSS performance, ISRU yields).
+- Hard evaluation of the agent against realistic crisis scenarios.
+- Frontend work that makes the Mission Control interface feel like something operators would actually trust.
 
-Please read [CONTRIBUTING.md](docs/CONTRIBUTING.md) before submitting work.
+Low-value contributions (will likely be rejected):
+- Vague "add more features" without understanding the constitutional constraints.
+- Simulation work that distracts from decision legibility.
+
+Read the core documents first:
+- [docs/THE_MARS_GOVERNANCE_PROBLEM.md](docs/THE_MARS_GOVERNANCE_PROBLEM.md)
+- [llmwiki/wiki/Emergency_Priorities.md](llmwiki/wiki/Emergency_Priorities.md)
 
 ## Philosophy
 
 > The best AI for space is not the one that sounds the smartest.  
-> It is the one whose reasoning can be read, challenged, and improved by the people whose lives depend on it.
+> It is the one whose reasoning can be read, challenged, and corrected by the people whose lives depend on it.
 
 AEON is built in that spirit.
 
@@ -168,6 +147,6 @@ AEON is built in that spirit.
 
 **License:** MIT
 
-**Status:** Early research prototype. Everything is subject to change as we learn what actually works.
+**Status:** Early but serious. The direction is set. The quality bar will rise rapidly.
 
-*For the people who will one day have to decide between keeping the lights on and keeping the crew alive — when no one on Earth can help in time.*
+*For the first crew that will one day face a real emergency on Mars, with Earth 20 minutes away and no one coming in time.*
