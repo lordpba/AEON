@@ -36,7 +36,7 @@ const AgentLog = () => {
           <path d="M12 12 2.1 7.1"></path>
           <path d="M12 12l9.9 4.9"></path>
         </svg>
-        AEON Core Intelligence (gemma4:e4b)
+        AEON Core (local Ollama • structured reasoning)
       </div>
       <div className="agent-log-content mono">
         <div><span className="json-key">"decision"</span>: <span className="json-string">"{log.decision}"</span>,</div>
@@ -108,7 +108,7 @@ const WikiTerminal = () => {
 };
 
 function App() {
-  // Mock BAU Telemetry
+  // Mock BAU Telemetry (static for Phase 1 foundation)
   const [telemetry, setTelemetry] = useState({
     power: 9.8,
     oxygen: 21.0,
